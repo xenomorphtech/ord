@@ -1,0 +1,12 @@
+%{
+  "bakeware": {:git, "https://github.com/bake-bake-bake/bakeware", "34c7d2852a8c7e435b2b3b223abdb1de9f0f1002", [branch: "main"]},
+  "certifi": {:git, "https://github.com/certifi/erlang-certifi", "73e1b7f1461ab246d1245c9178a0fa290ecebf52", []},
+  "elixir_make": {:hex, :elixir_make, "0.7.6", "67716309dc5d43e16b5abbd00c01b8df6a0c2ab54a8f595468035a50189f9169", [:mix], [{:castore, "~> 0.1 or ~> 1.0", [hex: :castore, repo: "hexpm", optional: true]}], "hexpm", "5a0569756b0f7873a77687800c164cca6dfc03a09418e6fcf853d78991f49940"},
+  "exjsx": {:hex, :exjsx, "4.0.0", "60548841e0212df401e38e63c0078ec57b33e7ea49b032c796ccad8cde794b5c", [:mix], [{:jsx, "~> 2.8.0", [hex: :jsx, repo: "hexpm", optional: false]}], "hexpm", "32e95820a97cffea67830e91514a2ad53b888850442d6d395f53a1ac60c82e07"},
+  "jsx": {:hex, :jsx, "2.8.3", "a05252d381885240744d955fbe3cf810504eb2567164824e19303ea59eef62cf", [:mix, :rebar3], [], "hexpm", "fc3499fed7a726995aa659143a248534adc754ebd16ccd437cd93b649a95091f"},
+  "mnesia_kv": {:git, "https://github.com/xenomorphtech/mnesia_kv.git", "b4212bbca846ccfa44fed1063de81c2eee964378", []},
+  "parse_trans": {:git, "https://github.com/uwiger/parse_trans", "cdb01ba260ba9a00b2aafa17affead0f6fac081c", []},
+  "photon": {:git, "https://github.com/vans163/photon.git", "e7d72b1371837c99b8437f6f303b49b540f2a8b4", []},
+  "rocksdb": {:git, "https://gitlab.com/barrel-db/erlang-rocksdb.git", "6df92d9c0e29842c634a956588c561dbf939e42b", []},
+  "ssl_verify_fun": {:git, "https://github.com/deadtrickster/ssl_verify_fun.erl", "b503f3e1a0397c495dca9930f131613190cea25b", []},
+}
