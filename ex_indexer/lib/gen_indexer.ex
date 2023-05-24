@@ -32,14 +32,13 @@ defmodule Ord.GenIndexer do
             IO.puts "coinnode not synced to first inscription height - #{cur_height} / #{fih}"
         next_process_index < cur_height ->
             IO.puts "syncing inscriptions from #{next_process_index} to #{cur_height}"
-            tx = Ord.Block.get_ord_transactions(next_process_index)
-            IO.inspect tx
-            #index_ordinal_block(next_process_index)
+            index_ordinal_block(next_process_index)
         #reorg occured
         cur_indexed_block.hash != hash ->
             depth = Ord.Block.reorg_depth(cur_height, hash)
             IO.puts "reorg detected at block #{cur_height} with a depth of #{depth}"
             #loading DB checkpoint from height x
+            #MnesiaKV.restore_reflink MainChain, "/tmp/testz"
 
         Process.get(:tick_delay, 100) < 100 ->
             Process.put(:tick_delay, 1000)
@@ -50,36 +49,30 @@ defmodule Ord.GenIndexer do
     end
   end
 
-  def index_mainchain_block(index) do
-    hash = Ord.Block.getblockhash(index)
-    if !hash do
-        :invalid_index
-    else
-        block = Ord.Block.getblock(hash)
-        |> Map.take([:hash, :nextblockhash, :previousblockhash, :height, :nTx, :time, :weight])
-        MnesiaKV.merge(MainChain, index, block)
-        nil
+  #Ord.GenIndexer.index_ordinal_block(767430)
+  #btrfs filesystem du db/
+  def index_ordinal_block(index) do
+    try do
+        index_ordinal_block_1(index)
+    catch
+        e,r ->
+            IO.inspect {:index_of_block_failed, index, e, r, __STACKTRACE__}
+            path = Path.join([Application.fetch_env!(:ord, :work_folder), "db/backup/#{index-1}"])
+            MnesiaKV.restore_reflink(MainChain, path)
+            MnesiaKV.restore_reflink(Ord, path)
     end
   end
 
-  def index_ordinal_block(index) do
+  def index_ordinal_block_1(index) do
       block = Ord.Block.getblockhash(index)
       |> Ord.Block.getblock()
+      |> Map.take([:hash, :nextblockhash, :previousblockhash, :height, :nTx, :time, :weight])
+      MnesiaKV.merge(MainChain, index, block)
 
-      IO.inspect block
-      Enum.reduce_while(block.tx, nil, fn(tx,_)->
-          tx_obj = Ord.Block.getrawtransaction(tx, true, block.hash)
-          txwitness = hd(tx_obj.vin)[:txinwitness]
-          cond do
-            !txwitness or length(txwitness) < 3 -> nil
-            String.starts_with?(Enum.at(txwitness,1), "20") -> IO.inspect tx_obj
-            true -> nil
-          end
-          {:cont, nil}
-      end)
-      
-      #get block
-      #get all tx
-      #filter out non-ordinal tx
+      Ord.BlockOrd.proc_ord_transactions(block.hash)
+
+      path = Path.join([Application.fetch_env!(:ord, :work_folder), "db/backup/#{index}"])
+      MnesiaKV.backup_reflink(MainChain, path)
+      MnesiaKV.backup_reflink(Ord, path)
   end
 end

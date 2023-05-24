@@ -33,6 +33,11 @@ defmodule Ord.MixProject do
 
       {:photon, git: "https://github.com/vans163/photon.git"},
       {:mnesia_kv, git: "https://github.com/xenomorphtech/mnesia_kv.git"},
+
+      #{:ssl_verify_fun, "~> 1.1.0", override: true},
+      #{:certifi, "~> 2.9.0", override: true},
+      #{:parse_trans, "3.3.1", override: true},
+      #{:bitcoinex, git: "https://github.com/RiverFinancial/bitcoinex.git"},
     ]
   end
 
