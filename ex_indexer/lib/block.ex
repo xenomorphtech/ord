@@ -1,9 +1,9 @@
-defmodule Ord.Block do
+defmodule Block do
     def post(method, params) do
-        url = "http://localhost:8332"
+        url = "http://localhost:#{Application.fetch_env!(:ord, :rpcport)}"
         headers = %{
             "Content-Type"=> "application/json",
-            "Authorization"=> "Basic b3JkOm9yZA==" #ord:ord
+            "Authorization"=> "Basic #{Application.fetch_env!(:ord, :rpcauth)}"
         }
         body = JSX.encode!(%{
             jsonrpc: "1.0",
@@ -46,7 +46,7 @@ defmodule Ord.Block do
 
     # functions
     def reorg_depth(start_height, hash) do
-        %{height: cur_height, previousblockhash: previousblockhash} = Ord.Block.getblock(hash)
+        %{height: cur_height, previousblockhash: previousblockhash} = getblock(hash)
         last_indexed_block = MnesiaKV.get(MainChain, cur_height-1)
         cond do
             last_indexed_block.hash == previousblockhash -> start_height-cur_height

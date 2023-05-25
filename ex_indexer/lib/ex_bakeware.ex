@@ -4,7 +4,7 @@ defmodule Ord.Bakeware do
 
     @impl Bakeware.Script
     def main(args) do
-        Ord.start(nil, args)
+        Ord.Ex.start(nil, args)
         receive do end
         0
     end

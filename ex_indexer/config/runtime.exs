@@ -1,9 +1,11 @@
 import Config
 
-#Farm
+#System
 work_folder = (System.get_env("WORKFOLDER") || Path.expand("~/.cache/ord/"))
 config :ord, :work_folder, work_folder
 config :ord, :log_level, (System.get_env("LOG_LEVEL") || "1") |> :erlang.binary_to_integer()
+config :ord, :rpcauth, (System.get_env("RPCAUTH") || "ord:ord") |> Base.encode64()
+config :ord, :rpcport, (System.get_env("RPCPORT") || "8332") |> :erlang.binary_to_integer()
 
 #make dirs
 :ok = File.mkdir_p!(work_folder)

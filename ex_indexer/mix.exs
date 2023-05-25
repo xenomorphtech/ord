@@ -23,7 +23,7 @@ defmodule Ord.MixProject do
     if Mix.env() == :prod do
       [{:mod, {Ord.Bakeware, []}} | apps]
     else
-      [{:mod, {Ord, []}} | apps]
+      [{:mod, {Ord.Ex, []}} | apps]
     end
   end
 
